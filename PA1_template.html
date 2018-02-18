@@ -9,6 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="Alex Lin" />
 
 
 <title>Reproducible Research Peer Assessment</title>
@@ -118,14 +119,18 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Reproducible Research Peer Assessment</h1>
+<h4 class="author"><em>Alex Lin</em></h4>
 
 </div>
 
 
-<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE)</code></pre>
 <div id="loadingreading-the-data" class="section level3">
 <h3>Loading/Reading the data</h3>
 <p>Note that the variable to track the number steps has 2304 missing entries ‘NA’.</p>
+<pre class="r"><code>library(here)</code></pre>
+<pre><code>## here() starts at E:/Coursera/Specializations/Data_Science_JHU/Repo_DSS/RepData_PeerAssessment1</code></pre>
+<pre class="r"><code>here()</code></pre>
+<pre><code>## [1] &quot;E:/Coursera/Specializations/Data_Science_JHU/Repo_DSS/RepData_PeerAssessment1&quot;</code></pre>
 <pre class="r"><code>myfile &lt;- read.csv(unz(&quot;activity.zip&quot;, &quot;activity.csv&quot;),header=T,)
 summary(myfile)</code></pre>
 <pre><code>##      steps                date          interval     

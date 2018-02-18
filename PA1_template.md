@@ -1,19 +1,33 @@
 ---
 title: "Reproducible Research Peer Assessment"
+author: "Alex Lin"
 output: 
   html_document:
     keep_md: true
 ---
 
 
-```r
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 ### Loading/Reading the data
 
 Note that the variable to track the number steps has 2304 missing entries 'NA'.
 
+
+```r
+library(here)
+```
+
+```
+## here() starts at E:/Coursera/Specializations/Data_Science_JHU/Repo_DSS/RepData_PeerAssessment1
+```
+
+```r
+here()
+```
+
+```
+## [1] "E:/Coursera/Specializations/Data_Science_JHU/Repo_DSS/RepData_PeerAssessment1"
+```
 
 ```r
 myfile <- read.csv(unz("activity.zip", "activity.csv"),header=T,)
