@@ -1,0 +1,81 @@
+---
+title: "Reproducible Research Peer Assessment"
+output: 
+  html_document:
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Code for Loading/Reading the data
+
+```{r}
+myfile <- read.csv(unz("activity.zip", "activity.csv"),header=T,)
+summary(myfile)
+```
+
+## Code for Preprocessing the data
+### Remove Missing values (NA)
+```{r}
+x <- as.data.frame(myfile[complete.cases(myfile), ])
+summary(x)
+head(x)
+```
+
+## Histogram of the total number of steps taken each day
+```{r}
+require(magrittr)
+require(dplyr)
+steps_sum<- x %>% group_by(date) %>% summarize(Total_Steps=sum(steps))
+str(steps_sum)
+hist(steps_sum$Total_Steps)
+```
+
+## What is mean total number of steps taken per day?
+## Mean and median number of steps taken each day
+```{r}
+steps_tally<-summary(steps_sum)
+str(steps_tally)
+paste(steps_tally[3,2],steps_tally[4,2],sep='    ')
+```
+
+## What is the average daily activity pattern?
+## Time series plot of the average number of steps taken
+```{r, fig.height=7}
+require(magrittr)
+require(dplyr)
+require(plotly)
+require(lubridate)
+steps_mean <- x %>% group_by(date) %>% summarize(mean_Steps=mean(steps))
+str(steps_mean)
+plot(steps_mean$mean_Steps~as.factor(substr(as.character(steps_mean$date),6,10)), type="p", xlab="Month-Date", ylab="Daily Average Steps")
+lines(steps_mean$mean_Steps)
+plot_ly(x = ~substr(as.character(steps_mean$date),6,10), y = ~steps_mean$mean_Steps, mode = 'lines', height=5, xlab="Month-Date", ylab="Daily Average Steps")
+
+ts(steps_mean)
+hist(steps_sum$Total_Steps)
+steps_tally<-summary(steps_sum)
+str(steps_tally)
+paste(steps_tally[3,2],steps_tally[4,2],sep='    ')
+```
+
+The 5-minute interval that, on average, contains the maximum number of steps
+Histogram of the total number of steps taken each day after missing values are imputed
+Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
+
+All of the R code needed to reproduce the results (numbers, plots, etc.) in the report
+
+
+
+
+
+
+Code to describe and show a strategy for imputing missing data
+## Imputing missing values
+
+
+```{r pressure}
+
+```
