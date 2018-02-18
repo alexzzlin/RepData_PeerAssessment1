@@ -6,6 +6,9 @@ output:
 ---
 
 
+```r
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 ### Loading/Reading the data
 
