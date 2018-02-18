@@ -1,25 +1,109 @@
 ---
-title: "Reproducible Research: Peer Assessment 1"
+title: "Reproducible Research Peer Assessment"
 output: 
   html_document:
     keep_md: true
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
-## Loading and preprocessing the data
+### Loading/Reading the data
 
+Note that the variable to track the number steps has 2304 missing entries 'NA'.
 
+```{r}
+myfile <- read.csv(unz("activity.zip", "activity.csv"),header=T,)
+summary(myfile)
+```
 
-## What is mean total number of steps taken per day?
+### Preprocessing the data - Remove Missing values (NA)
 
+1.Use the variable date to determine if it is a weekday or weekend.
+2.Classify day of the week into two groups: weekday and weekend
+3.Define a subset of records without any missing values.
 
+```{r}
+myfile$day <- weekdays(as.Date(myfile$date))
+unique(myfile$day)
+is_weekend <- myfile$day %in% c("Saturday","Sunday")
+myfile$day_type <- "weekday"
+myfile[is_weekend,]$day_type <- "weekend"
+unique(myfile$day_type)
+x <- as.data.frame(myfile[complete.cases(myfile), ])
+summary(x)
+```
 
-## What is the average daily activity pattern?
+### Plot Histogram of the total number of steps taken each day
+```{r}
+require(dplyr)
+daily_steps_sum<- x %>% group_by(as.factor(date)) %>% summarize(Total_Steps=sum(steps))
+hist(daily_steps_sum$Total_Steps,main = "Histogram of total number of steps taken per day", xlab = "Total number of steps", ylim=c(0,30))
+```
 
+### Find Mean and median number of steps taken per day
+```{r}
+steps_tally<-summary(daily_steps_sum)
+paste(steps_tally[3,2],steps_tally[4,2],sep='    ')
+```
 
+### Time series plot of average daily activity pattern in terms of average number of steps taken
+```{r}
+require(dplyr)
+steps_mean_interval <- x %>% group_by(interval) %>% summarize(mean_steps_interval=mean(steps))
+str(steps_mean_interval)
+plot(y=steps_mean_interval$mean_steps_interval,x=steps_mean_interval$interval, type="l", xlab="5-minute Interval", ylab="Interval Average Steps", main="average daily activity pattern")
+```
 
-## Imputing missing values
+### Find the 5-minute interval that, on average, contains the maximum number of steps
 
+1.Find the index where the maximum average number of step is.
+2.Find the 5-minute interval with the found index.
 
+```{r}
+index <-which.max(steps_mean_interval$mean_steps_interval)
+steps_mean_interval$interval[index]
+```
 
-## Are there differences in activity patterns between weekdays and weekends?
+### Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
+
+```{r, echo=TRUE, fig.height=7}
+require(dplyr)
+steps_mean_wkday <- x %>% group_by(day_type, interval) %>% summarize(mean_Steps_day=mean(steps))
+str(steps_mean_wkday)
+par(mfrow=c(2,1))
+lapply(unique(x$day_type), function(wkday) {
+  wkday_data <- steps_mean_wkday[which(steps_mean_wkday$day_type==wkday),]
+  wkday_p<-plot(wkday_data$mean_Steps_day ~ wkday_data$interval, xlab=wkday,
+    ylab="avg steps per 5-min interval", type="l")
+  wkday_p
+  }
+)
+```
+
+### Srategy and codes for imputing missing values
+
+1.The variable steps has total 2304 missing values in the dataset, i.e. the total number of rows with NAs.
+```{r}
+is_missing <- is.na(myfile$steps)
+table(is_missing)
+```
+2.The strategy is to use the mean of each 5-minute interval for either weekend or weekday to fill in all of the missing values for steps variable in the dataset.
+
+```{r}
+library(dplyr)
+myfile$steps_imp <- myfile$steps 
+myfile <- left_join(myfile, steps_mean_wkday, by = c("day_type","interval"))
+myfile <- transform(myfile, steps_imp=ifelse(is.na(steps), mean_Steps_day, steps))
+head(myfile)
+```
+
+### Histogram of the total number of steps taken each day after missing
+## values are imputed
+```{r}
+require(dplyr)
+steps_imp_sum<- myfile %>% group_by(as.factor(date)) %>% summarize(Total_Steps=sum(steps_imp))
+str(steps_imp_sum)
+hist(steps_imp_sum$Total_Steps,main = "Histogram of total number of steps with imputation taken per day", xlab = "Total number of steps imputed", ylim=c(0,40))
+```
