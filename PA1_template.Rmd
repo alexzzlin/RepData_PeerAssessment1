@@ -20,9 +20,9 @@ summary(myfile)
 
 ### Preprocessing the data - Remove Missing values (NA)
 
-1.Use the variable date to determine if it is a weekday or weekend.
-2.Classify day of the week into two groups: weekday and weekend
-3.Define a subset of records without any missing values.
+1. Use the variable date to determine if it is a weekday or weekend.
+2. Classify day of the week into two groups: weekday and weekend
+3. Define a subset of records without any missing values.
 
 ```{r}
 myfile$day <- weekdays(as.Date(myfile$date))
@@ -58,8 +58,8 @@ plot(y=steps_mean_interval$mean_steps_interval,x=steps_mean_interval$interval, t
 
 ### Find the 5-minute interval that, on average, contains the maximum number of steps
 
-1.Find the index where the maximum average number of step is.
-2.Find the 5-minute interval with the found index.
+1. Find the index where the maximum average number of step is.
+2. Find the 5-minute interval with the found index.
 
 ```{r}
 index <-which.max(steps_mean_interval$mean_steps_interval)
@@ -84,12 +84,12 @@ lapply(unique(x$day_type), function(wkday) {
 
 ### Srategy and codes for imputing missing values
 
-1.The variable steps has total 2304 missing values in the dataset, i.e. the total number of rows with NAs.
+1. The variable steps has total 2304 missing values in the dataset, i.e. the total number of rows with NAs.
 ```{r}
 is_missing <- is.na(myfile$steps)
 table(is_missing)
 ```
-2.The strategy is to use the mean of each 5-minute interval for either weekend or weekday to fill in all of the missing values for steps variable in the dataset.
+2. The strategy is to use the mean of each 5-minute interval for either weekend or weekday to fill in all of the missing values for steps variable in the dataset.
 
 ```{r}
 library(dplyr)
