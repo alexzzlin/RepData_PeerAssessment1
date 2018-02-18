@@ -162,6 +162,8 @@ steps_mean_interval$interval[index]
 
 ### Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
 
+It can seen that people were walking more over the weekends.
+
 
 ```r
 require(dplyr)
@@ -234,8 +236,7 @@ head(myfile)
 ## 6    NA 2012-10-01       25 Monday  weekday 1.5128205      1.5128205
 ```
 
-### Histogram of the total number of steps taken each day after missing
-## values are imputed
+### Histogram of the total number of steps taken each day after missing values are imputed
 
 ```r
 require(dplyr)

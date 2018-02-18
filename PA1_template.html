@@ -216,6 +216,7 @@ steps_mean_interval$interval[index]</code></pre>
 </div>
 <div id="panel-plot-comparing-the-average-number-of-steps-taken-per-5-minute-interval-across-weekdays-and-weekends" class="section level3">
 <h3>Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends</h3>
+<p>It can seen that people were walking more over the weekends.</p>
 <pre class="r"><code>require(dplyr)
 steps_mean_wkday &lt;- x %&gt;% group_by(day_type, interval) %&gt;% summarize(mean_Steps_day=mean(steps))
 str(steps_mean_wkday)</code></pre>
@@ -266,11 +267,8 @@ head(myfile)</code></pre>
 ## 5    NA 2012-10-01       20 Monday  weekday 0.1025641      0.1025641
 ## 6    NA 2012-10-01       25 Monday  weekday 1.5128205      1.5128205</code></pre>
 </div>
-<div id="histogram-of-the-total-number-of-steps-taken-each-day-after-missing" class="section level3">
-<h3>Histogram of the total number of steps taken each day after missing</h3>
-</div>
-<div id="values-are-imputed" class="section level2">
-<h2>values are imputed</h2>
+<div id="histogram-of-the-total-number-of-steps-taken-each-day-after-missing-values-are-imputed" class="section level3">
+<h3>Histogram of the total number of steps taken each day after missing values are imputed</h3>
 <pre class="r"><code>require(dplyr)
 steps_imp_sum&lt;- myfile %&gt;% group_by(as.factor(date)) %&gt;% summarize(Total_Steps=sum(steps_imp))
 str(steps_imp_sum)</code></pre>

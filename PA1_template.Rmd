@@ -68,6 +68,8 @@ steps_mean_interval$interval[index]
 
 ### Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
 
+It can seen that people were walking more over the weekends.
+
 ```{r, echo=TRUE, fig.height=7}
 require(dplyr)
 steps_mean_wkday <- x %>% group_by(day_type, interval) %>% summarize(mean_Steps_day=mean(steps))
@@ -99,8 +101,7 @@ myfile <- transform(myfile, steps_imp=ifelse(is.na(steps), mean_Steps_day, steps
 head(myfile)
 ```
 
-### Histogram of the total number of steps taken each day after missing
-## values are imputed
+### Histogram of the total number of steps taken each day after missing values are imputed
 ```{r}
 require(dplyr)
 steps_imp_sum<- myfile %>% group_by(as.factor(date)) %>% summarize(Total_Steps=sum(steps_imp))
